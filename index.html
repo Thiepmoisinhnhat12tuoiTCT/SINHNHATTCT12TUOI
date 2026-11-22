@@ -312,9 +312,6 @@ $("#phoneLink").textContent = CONFIG.contactPhone.replace(/(\d{4})(\d{3})(\d{3})
 $("#phoneLink").href = "tel:" + CONFIG.contactPhone;
 $("#mapBtn").href = CONFIG.mapUrl;
 const ics = t => new Date(t).toISOString().replace(/[-:]|\.\d{3}/g, "");
-$("#calBtn").href = "data:text/calendar;charset=utf-8," + encodeURIComponent(
-  `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${ics(CONFIG.eventStart)}\nDTEND:${ics(CONFIG.eventEnd)}\nSUMMARY:${CONFIG.eventName} - Sinh nhật lần thứ ${CONFIG.age} ${CONFIG.clubName}\nLOCATION:${CONFIG.venue}, ${CONFIG.address}\nEND:VEVENT\nEND:VCALENDAR`);
-$("#calBtn").download = "mien-truong.ics";
 
 // Đếm ngược
 function tick() {
@@ -359,6 +356,27 @@ $("#rsvpForm").addEventListener("submit", async e => {
   }
   try {
     msg.textContent = "Đang gửi…";
+
+    const formData = new URLSearchParams();
+    formData.append("name", payload.name);
+    formData.append("attend", payload.attend);
+    formData.append("people", payload.people);
+    formData.append("note", payload.note);
+
+    await fetch(CONFIG.rsvpEndpoint, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+    });
+
+    msg.textContent = "Đã gửi xác nhận! Cảm ơn bạn. Hẹn gặp tại sự kiện!";
+    f.reset();
+    setCount(1);
+
+} catch (error) {
+    msg.textContent = "Chưa gửi được. Bạn thử lại sau ít phút nhé.";
+    msg.classList.add("err");
+}
     const r = await fetch(CONFIG.rsvpEndpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(payload) });
     if (!r.ok) throw 0;
     msg.textContent = "Đã gửi xác nhận. Hẹn gặp bạn!"; f.reset(); setCount(1);
