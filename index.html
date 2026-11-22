@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Thiệp mời Miên Trường – Sinh nhật lần thứ 12 | CLB TNTN Marketing - TCT</title>
 <meta name="description" content="Trân trọng kính mời bạn đến dự Miên Trường – sinh nhật lần thứ 12 của CLB TNTN Marketing - TCT">
-<meta property="og:title" content="Miền Trường – Sinh nhật lần thứ 12 | CLB TNTN Marketing - TCT">
+<meta property="og:title" content="Miên Trường – Sinh nhật lần thứ 12 | CLB TNTN Marketing - TCT">
 <meta property="og:description" content="28/11/2026 – 17:30 – VENUS - KIM EVENT, 39 Cầu Diễn, Hà Nội">
 <meta property="og:image" content="anh-nen.jpg">
 <meta name="robots" content="noindex, nofollow">
@@ -118,7 +118,7 @@ legend{font-weight:500;margin-bottom:.4rem}
     <p class="hero-meta"><b data-bind="dateShort"></b> · <span data-bind="time"></span><br><span data-bind="venueShort"></span></p>
     <a class="scroll-hint" href="#invite">Mở thiệp</a>
   </div>  
-<div class="hero-photo"><img src="ảnh clb sn .jpg" alt="Ảnh toàn thể thành viên CLB trong buổi sinh nhật"></div>
+<div class="hero-photo"><img src="./cover-clb.jpg" alt="Ảnh toàn thể thành viên CLB trong buổi sinh nhật"></div>
 </header>
 
 <main>
@@ -202,7 +202,7 @@ legend{font-weight:500;margin-bottom:.4rem}
 <script>
 /* ====== CHỈNH THÔNG TIN SỰ KIỆN Ở ĐÂY ====== */
 const CONFIG = {
-  eventName: "Miền Trường",
+  eventName: "Miên Trường",
   clubName: "CLB Thanh niên Tình nguyện Marketing - TCT",
   age: "12",
   eventStart: "2026-11-28T17:30:00+07:00",
@@ -303,7 +303,7 @@ $("#rsvpForm").addEventListener("submit", async e => {
   const payload = { name, attend, people: attend === "Có" ? count : 0, note: f.note.value.trim() };
   if (!CONFIG.rsvpEndpoint) {
     const body = `Tên: ${payload.name}\nTham dự: ${payload.attend}\nSố người: ${payload.people}\nLời nhắn: ${payload.note}`;
-    location.href = `mailto:${CONFIG.rsvpEmail}?subject=${encodeURIComponent("RSVP Miền Trường - " + name)}&body=${encodeURIComponent(body)}`;
+    location.href = `mailto:${CONFIG.rsvpEmail}?subject=${encodeURIComponent("RSVP Miên Trường - " + name)}&body=${encodeURIComponent(body)}`;
     return;
   }
   try {
