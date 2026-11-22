@@ -12,8 +12,7 @@
 <meta name="color-scheme" content="light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet"><style>
 :root{
   --paper:#f4f2df; --mist:#dfeccb; --bamboo:#4b7a47; --bamboo-d:#2f5a30; --brown:#5a3e2b; --white:#fffef6;
   --f-display:"Cormorant Garamond","Be Vietnam Pro",Georgia,serif;
@@ -26,8 +25,7 @@ html{scroll-behavior:smooth}
 body{font:400 1rem/1.7 var(--f-body);color:var(--brown);background:var(--paper);padding-bottom:env(safe-area-inset-bottom)}
 section{max-width:34rem;margin:0 auto;padding:4.5rem 1.5rem;text-align:center}
 h1,h2{font-family:var(--f-display);line-height:1.05;color:var(--brown)}
-h2{font-size:clamp(2rem,7vw,2.8rem);font-weight:700;margin-bottom:1.25rem}
-a{color:var(--bamboo-d)}
+h2{font-size:clamp(2rem,7vw,2.8rem);font-weight:500;margin-bottom:1.25rem}a{color:var(--bamboo-d)}
 :focus-visible{outline:3px solid var(--bamboo);outline-offset:3px}
 
 /* ===== HERO: thông tin bên trái, ảnh bên phải ===== */
@@ -37,8 +35,7 @@ a{color:var(--bamboo-d)}
 .hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%}
 .hero-info{display:flex;flex-direction:column;justify-content:center;padding:2rem 1.5rem 3rem;text-align:left}
 .hero-club{font-weight:600;font-size:.95rem;margin-bottom:1rem}
-.hero-title{font-size:clamp(3.6rem,17vw,7.5rem);font-weight:700;color:var(--brown)}
-.hero-sub{display:flex;align-items:baseline;gap:.6rem;font-family:var(--f-display);font-size:1.7rem;margin-top:.5rem}
+.hero-title{font-size:clamp(3.6rem,17vw,7.5rem);font-weight:400;letter-spacing:.01em;line-height:1;color:var(--brown)}.hero-sub{display:flex;align-items:baseline;gap:.6rem;font-family:var(--f-display);font-size:1.7rem;margin-top:.5rem}
 .hero-sub b{font-size:clamp(5rem,22vw,9rem);line-height:.8;color:var(--bamboo);animation:rise 1s ease-out both}
 @keyframes rise{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
 .hero-meta{margin-top:1.25rem;font-weight:500}
@@ -209,7 +206,7 @@ const CONFIG = {
   eventEnd:   "2026-11-28T21:00:00+07:00", // giờ kết thúc dự kiến (dùng cho nút Thêm vào lịch)
   time: "17:30",
   venue: "Trung tâm Tổ chức Sự kiện VENUS - KIM EVENT",
-  venueShort: "VENUS - KIM EVENT, Cầu Diễn, Hà Nội",
+  venueShort: "VENUS - KIM EVENT, 39 Cầu Diễn, Hà Nội",
   address: "39 Cầu Diễn, Xuân Phương, Hà Nội",
   mapUrl: "https://www.google.com/maps/search/?api=1&query=VENUS+KIM+EVENT+39+Cau+Dien+Xuan+Phuong+Ha+Noi",
   contactName: "Ms. Kim Thu",
