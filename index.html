@@ -69,7 +69,36 @@ h2{font-size:clamp(2rem,7vw,2.8rem);font-weight:500;margin-bottom:1.25rem}a{colo
 .facts div{background:var(--white);border-radius:1rem;padding:1rem 1.25rem}
 .facts dt{font-size:.85rem;opacity:.7}
 .facts dd{font-weight:600}
-.facts small{font-weight:400;opacity:.85}
+/* ===== DRESSCODE ===== */
+.dresscode {
+  margin-top: 1rem;
+  padding-top: .85rem;
+  border-top: 1px solid rgba(90, 62, 43, .18);
+}
+
+.dresscode-title {
+  font-family: var(--f-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  margin-bottom: .6rem;
+  color: var(--brown);
+}
+
+.dresscode-colors {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  flex-wrap: wrap;
+}
+
+.dresscode-color {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, .15);
+  display: inline-block;
+}
 .btn{display:inline-block;border:0;cursor:pointer;font:600 1rem var(--f-body);text-decoration:none;
   background:var(--bamboo-d);color:#fff;padding:.85rem 1.6rem;border-radius:999px;margin:.25rem;min-height:3rem}
 .btn.ghost{background:transparent;color:var(--brown);border:2px solid var(--brown)}
@@ -143,7 +172,26 @@ legend{font-weight:500;margin-bottom:.4rem}
     <dl class="facts">
       <div><dt>Thời gian</dt><dd><span data-bind="time"></span> – <span data-bind="dateLong"></span></dd></div>
       <div><dt>Địa điểm</dt><dd><span data-bind="venue"></span><br><small data-bind="address"></small></dd></div>
-      <div><dt>Liên hệ</dt><dd><span data-bind="contactName"></span><br><a id="phoneLink"></a></dd></div>
+      <div>
+  <dt>Liên hệ</dt>
+  <dd>
+    <span data-bind="contactName"></span><br>
+    <a id="phoneLink"></a>
+
+    <div class="dresscode">
+      <p class="dresscode-title">DRESSCODE:</p>
+
+      <div class="dresscode-colors">
+        <span class="dresscode-color" style="background:#456448"></span>
+        <span class="dresscode-color" style="background:#6B5948"></span>
+        <span class="dresscode-color" style="background:#F4EBD0"></span>
+        <span class="dresscode-color" style="background:#FFFFFF"></span>
+        <span class="dresscode-color" style="background:#080808"></span>
+      </div>
+    </div>
+
+  </dd>
+</div>
     </dl>
     <a class="btn" id="mapBtn" target="_blank" rel="noopener">Xem bản đồ</a>
   </section>
