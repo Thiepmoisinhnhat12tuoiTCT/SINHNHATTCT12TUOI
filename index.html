@@ -174,14 +174,24 @@ a { color: var(--bamboo-d); }
 
 /* LỜI MỜI */
 
+.invite p {
+  font-size: 1rem;
+}
+
 .invite .guest {
   font-family: var(--f-body);
-  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  font-size: clamp(1.3rem, 5vw, 2.4rem);
   line-height: 1.4;
   font-weight: 600;
   color: var(--bamboo-d);
   margin: 1rem 0;
   overflow-wrap: anywhere;
+}
+
+/* Tùy chỉnh riêng đoạn chữ "đến chung vui..." phía dưới */
+.invite p:last-of-type {
+  font-size: clamp(0.9rem, 3.8vw, 1.05rem);
+  line-height: 1.6;
 }
 
 /* BAN TỔ CHỨC */
