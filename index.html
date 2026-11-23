@@ -799,7 +799,7 @@ legend {
 
     <!-- HIỂN THỊ LỜI CHÚC CỦA MỌI NGƯỜI -->
     <div class="wishes-container">
-      <h3>Sổ lưu bút & Lời chúc</h3>
+      <h3>Sổ lưu bút</h3>
       <div class="wishes-list" id="wishesList">
         <p style="text-align: center; opacity: .7; font-size: .95rem;">Đang tải lời chúc…</p>
       </div>
@@ -1088,47 +1088,63 @@ document.querySelectorAll("[name=attend]").forEach(r => {
    TẢI VÀ HIỂN THỊ LỜI CHÚC TỪ GOOGLE SHEET
 ========================================== */
 
-async function loadWishes() {
+function renderWishes(data) {
+  const listEl = $("#wishesList");
+  if (!data || data.length === 0) {
+    listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa có lời chúc nào. Hãy là người đầu tiên gửi lời chúc nhé!</p>`;
+    return;
+  }
+
+  // Lọc các dòng có lời nhắn và đảo ngược để hiện lời chúc mới nhất lên đầu
+  const validWishes = data.filter(item => item.note && item.note.trim() !== "").reverse();
+
+  if (validWishes.length === 0) {
+    listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa có lời nhắn nào được gửi.</p>`;
+    return;
+  }
+
+  listEl.innerHTML = validWishes.map(item => `
+    <div class="wish-card">
+      <div class="wish-header">
+        <span>${escapeHtml(item.name)}</span>
+        <span class="wish-time">${escapeHtml(item.time)}</span>
+      </div>
+      <div class="wish-content">${escapeHtml(item.note)}</div>
+    </div>
+  `).join("");
+}
+
+function loadWishes() {
   const listEl = $("#wishesList");
   if (!CONFIG.rsvpEndpoint) {
     listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa kết nối Google Sheet để hiển thị lời chúc trực tuyến.</p>`;
     return;
   }
 
-  try {
-    const res = await fetch(CONFIG.rsvpEndpoint);
-    const data = await res.json();
-    
-    if (!data || data.length === 0) {
-      listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa có lời chúc nào. Hãy là người đầu tiên gửi lời chúc nhé!</p>`;
-      return;
-    }
+  // Xóa script cũ nếu có
+  const oldScript = document.getElementById("jsonpWishes");
+  if (oldScript) oldScript.remove();
 
-    // Lọc các dòng có lời nhắn và đảo ngược để hiện lời chúc mới nhất lên đầu
-    const validWishes = data.filter(item => item.note && item.note.trim() !== "").reverse();
-
-    if (validWishes.length === 0) {
-      listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa có lời nhắn nào được gửi.</p>`;
-      return;
-    }
-
-    listEl.innerHTML = validWishes.map(item => `
-      <div class="wish-card">
-        <div class="wish-header">
-          <span>${escapeHtml(item.name)} (${item.attend === 'Có' ? 'Tham gia' : 'Không tham gia'})</span>
-          <span class="wish-time">${item.time || ''}</span>
-        </div>
-        <div class="wish-content">${escapeHtml(item.note)}</div>
-      </div>
-    `).join("");
-
-  } catch (err) {
+  // Tạo thẻ script gọi JSONP để tránh bị trình duyệt chặn CORS
+  const script = document.createElement("script");
+  script.id = "jsonpWishes";
+  const separator = CONFIG.rsvpEndpoint.includes("?") ? "&" : "?";
+  script.src = `${CONFIG.rsvpEndpoint}${separator}callback=renderWishes&t=${Date.now()}`;
+  
+  script.onerror = () => {
     listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Không thể tải danh sách lời chúc lúc này.</p>`;
-  }
+  };
+
+  document.body.appendChild(script);
 }
 
 function escapeHtml(str) {
-  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 // Gọi tải lời chúc khi mở trang
