@@ -1116,13 +1116,13 @@ function renderWishes(data) {
     return;
   }
 
+  // ĐÃ BỎ PHẦN THỜI GIAN, CHỈ GIỮ LẠI TÊN VÀ NỘI DUNG LỜI NHẮN
   listEl.innerHTML = validWishes.map(item => `
     <div class="wish-card">
       <div class="wish-header">
-        <span>${escapeHtml(item.name)}</span>
-        <span class="wish-time">${escapeHtml(item.time)}</span>
+        <span style="font-size: 1.05rem; font-weight: 600; color: var(--bamboo-d);">${escapeHtml(item.name)}</span>
       </div>
-      <div class="wish-content">${escapeHtml(item.note)}</div>
+      <div class="wish-content" style="margin-top: .35rem;">${escapeHtml(item.note)}</div>
     </div>
   `).join("");
 }
