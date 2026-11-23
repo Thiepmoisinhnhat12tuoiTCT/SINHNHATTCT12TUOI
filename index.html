@@ -273,13 +273,14 @@ a { color: var(--bamboo-d); }
 .dresscode-colors {
   display: flex;
   align-items: center;
-  gap: .7rem;
-  flex-wrap: wrap;
+  gap: clamp(.45rem, 2.5vw, .75rem);
+  flex-wrap: nowrap; /* Ép tất cả nằm trên 1 hàng ngang */
 }
 
 .dresscode-color {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: clamp(1.9rem, 9vw, 2.4rem); /* Tự thu nhỏ nhẹ trên màn hình bé */
+  height: clamp(1.9rem, 9vw, 2.4rem);
+  flex-shrink: 0; /* Giữ hình tròn không bị bóp méo */
   border-radius: 50%;
   border: 2px solid rgba(0, 0, 0, .15);
   display: inline-block;
