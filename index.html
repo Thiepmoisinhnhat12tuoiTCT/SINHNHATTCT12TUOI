@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -188,7 +187,6 @@ a { color: var(--bamboo-d); }
   overflow-wrap: anywhere;
 }
 
-/* Tùy chỉnh riêng đoạn chữ "đến chung vui..." phía dưới */
 .invite p:last-of-type {
   font-size: clamp(0.9rem, 3.8vw, 1.05rem);
   line-height: 1.6;
@@ -284,13 +282,13 @@ a { color: var(--bamboo-d); }
   display: flex;
   align-items: center;
   gap: clamp(.45rem, 2.5vw, .75rem);
-  flex-wrap: nowrap; /* Ép tất cả nằm trên 1 hàng ngang */
+  flex-wrap: nowrap;
 }
 
 .dresscode-color {
-  width: clamp(1.9rem, 9vw, 2.4rem); /* Tự thu nhỏ nhẹ trên màn hình bé */
+  width: clamp(1.9rem, 9vw, 2.4rem);
   height: clamp(1.9rem, 9vw, 2.4rem);
-  flex-shrink: 0; /* Giữ hình tròn không bị bóp méo */
+  flex-shrink: 0;
   border-radius: 50%;
   border: 2px solid rgba(0, 0, 0, .15);
   display: inline-block;
@@ -388,7 +386,7 @@ a { color: var(--bamboo-d); }
   opacity: .7;
 }
 
-/* RSVP */
+/* RSVP & WISHES LIST */
 
 .rsvp > p {
   max-width: 28rem;
@@ -493,6 +491,57 @@ legend {
 }
 
 .form-msg.err { color: #b3261e; }
+
+/* KHUNG HIỂN THỊ LỜI CHÚC (SỔ LƯU BÚT) */
+.wishes-container {
+  margin-top: 3rem;
+  text-align: left;
+}
+
+.wishes-container h3 {
+  font-family: var(--f-display);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: var(--bamboo-d);
+}
+
+.wishes-list {
+  display: grid;
+  gap: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: .5rem;
+}
+
+.wish-card {
+  background: var(--white);
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 8px rgba(90, 62, 43, 0.05);
+}
+
+.wish-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: .95rem;
+  margin-bottom: .4rem;
+  color: var(--bamboo-d);
+}
+
+.wish-time {
+  font-weight: 400;
+  font-size: .8rem;
+  opacity: .7;
+}
+
+.wish-content {
+  font-size: .95rem;
+  line-height: 1.5;
+  color: var(--brown);
+  word-break: break-word;
+}
 
 /* QUÀ TẶNG */
 
@@ -693,16 +742,15 @@ legend {
     <h2>Xác nhận tham dự</h2>
 
     <p>
-  Sự có mặt của bạn là niềm vui lớn của CLB.
-  Hãy điền thông tin ở bên dưới và xác nhận tham gia
-  để chúng mình chuẩn bị chỗ ngồi thật chu đáo nhé.
-</p>
+      Sự có mặt của bạn là niềm vui lớn của CLB.
+      Hãy điền thông tin ở bên dưới và xác nhận tham gia
+      để chúng mình chuẩn bị chỗ ngồi thật chu đáo nhé.
+    </p>
 
     <form id="rsvpForm" novalidate>
 
       <label class="field">
         Tên của bạn
-
         <input type="text"
                name="name"
                id="rsvpName"
@@ -711,9 +759,7 @@ legend {
       </label>
 
       <fieldset>
-
         <legend>Bạn có tham dự không?</legend>
-
         <label class="choice">
           <input type="radio"
                  name="attend"
@@ -721,40 +767,26 @@ legend {
                  required>
           <span>Có, chắc chắn rồi</span>
         </label>
-
         <label class="choice">
           <input type="radio"
                  name="attend"
                  value="Không">
           <span>Rất tiếc, mình không thể tham gia</span>
         </label>
-
       </fieldset>
 
       <div class="field" id="countField">
-
         <span>Số người tham dự (tính cả bạn)</span>
-
         <div class="stepper">
-
-          <button type="button"
-                  id="minus"
-                  aria-label="Giảm">−</button>
-
+          <button type="button" id="minus" aria-label="Giảm">−</button>
           <output id="count">1</output>
-
-          <button type="button"
-                  id="plus"
-                  aria-label="Tăng">+</button>
-
+          <button type="button" id="plus" aria-label="Tăng">+</button>
         </div>
-
       </div>
 
       <label class="field">
         Lời nhắn cho CLB (không bắt buộc)
-
-        <textarea name="note" rows="3"></textarea>
+        <textarea name="note" rows="3" placeholder="Gửi lời chúc đến CLB nhé..."></textarea>
       </label>
 
       <button class="btn" type="submit">
@@ -772,7 +804,7 @@ legend {
         <p style="text-align: center; opacity: .7; font-size: .95rem;">Đang tải lời chúc…</p>
       </div>
     </div>
-    
+
   </section>
 
   <!-- QUÀ TẶNG -->
@@ -861,7 +893,7 @@ const CONFIG = {
 
   // Điền URL Google Apps Script đã triển khai nếu sử dụng gửi RSVP tự động.
   // Để trống sẽ mở ứng dụng email.
-  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbxLg2w06ko-3PGGdscbpzS3zJy7o-K-95NSqnS7KtKF0PYeYzG159Ew5Kl2n_N8di5H/exec",
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbw1J-gttRbTIg3OCmZgHEmZSI1_f5SafPPbEqgopK9nRMFtbGZTEBMHtbEfwmNcTRlx/exec",
 
   rsvpEmail: "clb@example.com"
 
@@ -906,7 +938,6 @@ document.querySelectorAll("[data-bind]").forEach(el => {
 
 /* ==========================================
    TÊN KHÁCH MỜI TỪ ĐƯỜNG LINK
-   Ví dụ: ?ten=Em%20Thuong
 ========================================== */
 
 const guest = new URLSearchParams(location.search).get("ten");
@@ -958,28 +989,19 @@ $("#strip").innerHTML = CONFIG.album.map((src, i) => `
 `).join("");
 
 const strip = $("#strip");
-
 const figs = [...strip.children];
 
 const updateCount = () => {
-
   if (!figs.length) return;
-
   const mid = strip.scrollLeft + strip.clientWidth / 2;
-
   const i = figs.findIndex(
     f => f.offsetLeft + f.offsetWidth > mid
   );
-
   $("#stripCount").textContent =
     `${Math.max(i, 0) + 1} / ${figs.length}`;
-
 };
 
-strip.addEventListener("scroll", updateCount, {
-  passive: true
-});
-
+strip.addEventListener("scroll", updateCount, { passive: true });
 updateCount();
 
 
@@ -994,7 +1016,6 @@ $("#phoneLink").textContent =
   );
 
 $("#phoneLink").href = "tel:" + CONFIG.contactPhone;
-
 $("#mapBtn").href = CONFIG.mapUrl;
 
 
@@ -1003,29 +1024,19 @@ $("#mapBtn").href = CONFIG.mapUrl;
 ========================================== */
 
 function tick() {
-
   const ms = d - Date.now();
-
   const el = $("#countdown");
-
   if (ms <= 0) {
     el.textContent = "Sự kiện đã diễn ra";
     return;
   }
-
   const day = Math.floor(ms / 864e5);
-
   const h = Math.floor(ms % 864e5 / 36e5);
-
   const m = Math.floor(ms % 36e5 / 6e4);
-
-  el.textContent =
-    `Còn ${day} ngày ${h} giờ ${m} phút`;
-
+  el.textContent = `Còn ${day} ngày ${h} giờ ${m} phút`;
 }
 
 tick();
-
 setInterval(tick, 30000);
 
 
@@ -1036,35 +1047,19 @@ setInterval(tick, 30000);
 const qrImg = $("#qrImg");
 
 qrImg.onerror = () => {
-
   qrImg.hidden = true;
-
-  $("#qrInfo").textContent =
-    "Mã QR sẽ sớm được cập nhật.";
-
+  $("#qrInfo").textContent = "Mã QR sẽ sớm được cập nhật.";
 };
 
 qrImg.src = CONFIG.qrImage;
-
 $("#qrInfo").textContent = CONFIG.qrInfo;
 
 $("#qrBtn").onclick = e => {
-
   const box = $("#qrBox");
-
   const open = box.hidden;
-
   box.hidden = !open;
-
-  e.currentTarget.setAttribute(
-    "aria-expanded",
-    String(open)
-  );
-
-  e.currentTarget.textContent = open
-    ? "Ẩn mã QR"
-    : "Hiện mã QR chuyển tiền";
-
+  e.currentTarget.setAttribute("aria-expanded", String(open));
+  e.currentTarget.textContent = open ? "Ẩn mã QR" : "Hiện mã QR chuyển tiền";
 };
 
 
@@ -1075,146 +1070,128 @@ $("#qrBtn").onclick = e => {
 let count = 1;
 
 const setCount = n => {
-
   count = Math.min(10, Math.max(1, n));
-
   $("#count").textContent = count;
-
 };
 
 $("#minus").onclick = () => setCount(count - 1);
-
 $("#plus").onclick = () => setCount(count + 1);
 
-
-/* Ẩn số người nếu khách không tham dự */
-
 document.querySelectorAll("[name=attend]").forEach(r => {
-
   r.addEventListener("change", () => {
-
-    $("#countField").hidden =
-      r.value === "Không" && r.checked;
-
+    $("#countField").hidden = (r.value === "Không" && r.checked);
   });
-
 });
 
 
 /* ==========================================
-   GỬI XÁC NHẬN RSVP
+   TẢI VÀ HIỂN THỊ LỜI CHÚC TỪ GOOGLE SHEET
+========================================== */
+
+async function loadWishes() {
+  const listEl = $("#wishesList");
+  if (!CONFIG.rsvpEndpoint) {
+    listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa kết nối Google Sheet để hiển thị lời chúc trực tuyến.</p>`;
+    return;
+  }
+
+  try {
+    const res = await fetch(CONFIG.rsvpEndpoint);
+    const data = await res.json();
+    
+    if (!data || data.length === 0) {
+      listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa có lời chúc nào. Hãy là người đầu tiên gửi lời chúc nhé!</p>`;
+      return;
+    }
+
+    // Lọc các dòng có lời nhắn và đảo ngược để hiện lời chúc mới nhất lên đầu
+    const validWishes = data.filter(item => item.note && item.note.trim() !== "").reverse();
+
+    if (validWishes.length === 0) {
+      listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa có lời nhắn nào được gửi.</p>`;
+      return;
+    }
+
+    listEl.innerHTML = validWishes.map(item => `
+      <div class="wish-card">
+        <div class="wish-header">
+          <span>${escapeHtml(item.name)} (${item.attend === 'Có' ? 'Tham gia' : 'Không tham gia'})</span>
+          <span class="wish-time">${item.time || ''}</span>
+        </div>
+        <div class="wish-content">${escapeHtml(item.note)}</div>
+      </div>
+    `).join("");
+
+  } catch (err) {
+    listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Không thể tải danh sách lời chúc lúc này.</p>`;
+  }
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+// Gọi tải lời chúc khi mở trang
+loadWishes();
+
+
+/* ==========================================
+   GỬI XÁC NHẬN RSVP & LỜI CHÚC
 ========================================== */
 
 $("#rsvpForm").addEventListener("submit", async e => {
-
   e.preventDefault();
 
   const f = e.target;
-
   const msg = $("#formMsg");
-
   const name = f.elements.namedItem("name").value.trim();
-
-  const attendInput = f.elements.namedItem("attend");
-
-  const attend = attendInput.value;
-
+  const attendInput = f.querySelector("[name=attend]:checked");
   const note = f.elements.namedItem("note").value.trim();
 
   msg.className = "form-msg";
 
-  if (!name || !attend) {
-
-    msg.textContent =
-      "Bạn nhập tên và chọn có tham dự hay không nhé.";
-
+  if (!name || !attendInput) {
+    msg.textContent = "Bạn vui lòng nhập tên và chọn có tham dự hay không nhé.";
     msg.classList.add("err");
-
     return;
-
   }
 
+  const attend = attendInput.value;
   const payload = {
-
     name: name,
-
     attend: attend,
-
     people: attend === "Có" ? count : 0,
-
     note: note
-
   };
 
-
-  /* Nếu chưa cấu hình Google Apps Script,
-     mở email để gửi xác nhận */
-
+  // Nếu chưa cấu hình Apps Script thì mở mail
   if (!CONFIG.rsvpEndpoint) {
-
-    const body =
-      `Tên: ${payload.name}\n` +
-      `Tham dự: ${payload.attend}\n` +
-      `Số người: ${payload.people}\n` +
-      `Lời nhắn: ${payload.note}`;
-
-    location.href =
-      `mailto:${CONFIG.rsvpEmail}` +
-      `?subject=${encodeURIComponent("RSVP Miên Trường - " + name)}` +
-      `&body=${encodeURIComponent(body)}`;
-
+    const body = `Tên: ${payload.name}\nTham dự: ${payload.attend}\nSố người: ${payload.people}\nLời nhắn: ${payload.note}`;
+    location.href = `mailto:${CONFIG.rsvpEmail}?subject=${encodeURIComponent("RSVP Miên Trường - " + name)}&body=${encodeURIComponent(body)}`;
     return;
-
   }
-
-
-  /* Gửi dữ liệu đến Google Apps Script */
 
   try {
-
-    msg.textContent = "Đang gửi xác nhận…";
-
-    const formData = new URLSearchParams();
-
-    formData.append("name", payload.name);
-
-    formData.append("attend", payload.attend);
-
-    formData.append("people", String(payload.people));
-
-    formData.append("note", payload.note);
-
+    msg.textContent = "Đang gửi xác nhận và lời chúc…";
 
     await fetch(CONFIG.rsvpEndpoint, {
-
       method: "POST",
-
-      mode: "no-cors",
-
-      body: formData
-
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "text/plain;charset=utf-8" }
     });
 
-
-    msg.textContent =
-      "Đã gửi yêu cầu xác nhận. Cảm ơn bạn! Hẹn gặp tại sự kiện!";
-
+    msg.textContent = "Đã gửi lời chúc thành công! Cảm ơn bạn rất nhiều! ❤️";
     f.reset();
-
     setCount(1);
-
     $("#countField").hidden = false;
 
+    // Tải lại danh sách lời chúc ngay lập tức
+    setTimeout(loadWishes, 1500);
 
   } catch (error) {
-
-    msg.textContent =
-      "Chưa gửi được. Bạn thử lại sau ít phút nhé.";
-
+    msg.textContent = "Chưa gửi được. Bạn thử lại sau ít phút nhé.";
     msg.classList.add("err");
-
   }
-
 });
 
 </script>
