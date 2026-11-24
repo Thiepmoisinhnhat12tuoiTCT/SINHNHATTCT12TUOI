@@ -521,16 +521,26 @@ legend {
 
 .wishes-list {
   display: grid;
-  gap: 1rem;
-  max-height: 400px;
-  overflow-y: auto;
-  padding-right: .5rem;
+  gap: .85rem;
+  background: rgba(255, 254, 246, .55);
+  border: 1.5px solid rgba(75, 122, 71, .28);
+  border-radius: 1.25rem;
+  padding: 1rem;
+  transition: background-color .2s ease;
+}
+
+.wishes-list.expandable {
+  cursor: pointer;
+}
+
+.wishes-list.expandable:hover {
+  background: rgba(255, 254, 246, .85);
 }
 
 .wish-card {
   background: var(--white);
-  border-radius: 1rem;
-  padding: 1rem 1.25rem;
+  border-radius: .9rem;
+  padding: .9rem 1.15rem;
   box-shadow: 0 2px 8px rgba(90, 62, 43, 0.05);
 }
 
@@ -539,14 +549,8 @@ legend {
   justify-content: space-between;
   font-weight: 600;
   font-size: .95rem;
-  margin-bottom: .4rem;
+  margin-bottom: .3rem;
   color: var(--bamboo-d);
-}
-
-.wish-time {
-  font-weight: 400;
-  font-size: .8rem;
-  opacity: .7;
 }
 
 .wish-content {
@@ -554,6 +558,14 @@ legend {
   line-height: 1.5;
   color: var(--brown);
   word-break: break-word;
+}
+
+.wishes-toggle-hint {
+  text-align: center;
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--bamboo-d);
+  padding-top: .25rem;
 }
 
 /* QUÀ TẶNG */
@@ -1101,6 +1113,41 @@ document.querySelectorAll("[name=attend]").forEach(r => {
    TẢI VÀ HIỂN THỊ LỜI CHÚC TỪ GOOGLE SHEET
 ========================================== */
 
+let allValidWishes = [];
+let isWishesExpanded = false;
+
+function drawWishesBox() {
+  const listEl = $("#wishesList");
+  const total = allValidWishes.length;
+  const hasMore = total > 3;
+
+  // Nếu chưa mở rộng thì chỉ lấy 3 lời chúc mới nhất
+  const visibleWishes = (hasMore && !isWishesExpanded)
+    ? allValidWishes.slice(0, 3)
+    : allValidWishes;
+
+  listEl.classList.toggle("expandable", hasMore);
+
+  const cardsHtml = visibleWishes.map(item => `
+    <div class="wish-card">
+      <div class="wish-header">
+        <span style="font-size: 1.05rem; font-weight: 600; color: var(--bamboo-d);">${escapeHtml(item.name)}</span>
+      </div>
+      <div class="wish-content">${escapeHtml(item.note)}</div>
+    </div>
+  `).join("");
+
+  const hintHtml = hasMore
+    ? `<div class="wishes-toggle-hint">${
+        isWishesExpanded
+          ? "Thu gọn danh sách ▴"
+          : `Nhấn vào khung để xem tất cả ${total} lời chúc ▾`
+      }</div>`
+    : "";
+
+  listEl.innerHTML = cardsHtml + hintHtml;
+}
+
 function renderWishes(data) {
   const listEl = $("#wishesList");
   if (!data || data.length === 0) {
@@ -1108,60 +1155,23 @@ function renderWishes(data) {
     return;
   }
 
-  // Lọc các dòng có lời nhắn và đảo ngược để hiện lời chúc mới nhất lên đầu
-  const validWishes = data.filter(item => item.note && item.note.trim() !== "").reverse();
+  allValidWishes = data.filter(item => item.note && item.note.trim() !== "").reverse();
 
-  if (validWishes.length === 0) {
+  if (allValidWishes.length === 0) {
     listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa có lời nhắn nào được gửi.</p>`;
     return;
   }
 
-  // ĐÃ BỎ PHẦN THỜI GIAN, CHỈ GIỮ LẠI TÊN VÀ NỘI DUNG LỜI NHẮN
-  listEl.innerHTML = validWishes.map(item => `
-    <div class="wish-card">
-      <div class="wish-header">
-        <span style="font-size: 1.05rem; font-weight: 600; color: var(--bamboo-d);">${escapeHtml(item.name)}</span>
-      </div>
-      <div class="wish-content" style="margin-top: .35rem;">${escapeHtml(item.note)}</div>
-    </div>
-  `).join("");
+  drawWishesBox();
 }
 
-function loadWishes() {
-  const listEl = $("#wishesList");
-  if (!CONFIG.rsvpEndpoint) {
-    listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Chưa kết nối Google Sheet để hiển thị lời chúc trực tuyến.</p>`;
-    return;
-  }
-
-  // Xóa script cũ nếu có
-  const oldScript = document.getElementById("jsonpWishes");
-  if (oldScript) oldScript.remove();
-
-  // Tạo thẻ script gọi JSONP để tránh bị trình duyệt chặn CORS
-  const script = document.createElement("script");
-  script.id = "jsonpWishes";
-  const separator = CONFIG.rsvpEndpoint.includes("?") ? "&" : "?";
-  script.src = `${CONFIG.rsvpEndpoint}${separator}callback=renderWishes&t=${Date.now()}`;
-  
-  script.onerror = () => {
-    listEl.innerHTML = `<p style="text-align: center; opacity: .7; font-size: .95rem;">Không thể tải danh sách lời chúc lúc này.</p>`;
-  };
-
-  document.body.appendChild(script);
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-// Gọi tải lời chúc khi mở trang
-loadWishes();
+// Bắt sự kiện bấm vào khung để mở rộng / thu gọn toàn bộ lời chúc
+$("#wishesList").addEventListener("click", () => {
+  if (allValidWishes.length <= 3) return;
+  if (window.getSelection && window.getSelection().toString()) return;
+  isWishesExpanded = !isWishesExpanded;
+  drawWishesBox();
+});
 
 
 /* ==========================================
